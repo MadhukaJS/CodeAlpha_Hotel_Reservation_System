@@ -12,16 +12,17 @@ public class HotelReservationSystem extends JFrame {
 
     public HotelReservationSystem() {
         setTitle("Hotel Reservation System");
-        setSize(400, 200);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         hotel = new Hotel();
         hotel.initializeRooms();
 
-        JPanel mainPanel = new JPanel(new GridLayout(3, 1));
+        JPanel mainPanel = new JPanel(new GridLayout(3, 1, 10, 10)); // Adjusted spacing
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JButton searchButton = new JButton("Search for Available Rooms");
+        JButton searchButton = createStyledButton("Search for Available Rooms");
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -30,7 +31,7 @@ public class HotelReservationSystem extends JFrame {
         });
         mainPanel.add(searchButton);
 
-        JButton reservationButton = new JButton("Make Reservation");
+        JButton reservationButton = createStyledButton("Make Reservation");
         reservationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,7 +40,7 @@ public class HotelReservationSystem extends JFrame {
         });
         mainPanel.add(reservationButton);
 
-        JButton bookingDetailsButton = new JButton("View Booking Details");
+        JButton bookingDetailsButton = createStyledButton("View Booking Details");
         bookingDetailsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,6 +51,15 @@ public class HotelReservationSystem extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setBackground(new Color(34, 139, 34));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+        return button;
     }
 
     public static void main(String[] args) {
@@ -156,11 +166,12 @@ class Room {
 class SearchRoomsFrame extends JFrame {
     public SearchRoomsFrame(Hotel hotel) {
         setTitle("Search for Available Rooms");
-        setSize(400, 200);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JComboBox<String> categoryComboBox = new JComboBox<>();
         for (String category : hotel.getRoomCategories()) {
@@ -196,11 +207,12 @@ class SearchRoomsFrame extends JFrame {
 class MakeReservationFrame extends JFrame {
     public MakeReservationFrame(Hotel hotel) {
         setTitle("Make Reservation");
-        setSize(400, 200);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JComboBox<String> categoryComboBox = new JComboBox<>();
         for (String category : hotel.getRoomCategories()) {
@@ -209,7 +221,7 @@ class MakeReservationFrame extends JFrame {
         mainPanel.add(categoryComboBox, BorderLayout.NORTH);
 
         JTextField nameTextField = new JTextField(20);
-        mainPanel.add(new JLabel("Enter Name:"), BorderLayout.WEST);
+        mainPanel.add(new JLabel("Enter Guest Name:"), BorderLayout.WEST);
         mainPanel.add(nameTextField, BorderLayout.CENTER);
 
         JButton reserveButton = new JButton("Reserve");
@@ -240,11 +252,12 @@ class MakeReservationFrame extends JFrame {
 class ViewBookingDetailsFrame extends JFrame {
     public ViewBookingDetailsFrame(Hotel hotel) {
         setTitle("View Booking Details");
-        setSize(400, 200);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JTextArea detailsTextArea = new JTextArea(10, 30);
         detailsTextArea.setEditable(false);
