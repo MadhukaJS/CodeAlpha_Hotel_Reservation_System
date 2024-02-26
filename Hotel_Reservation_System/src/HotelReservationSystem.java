@@ -102,12 +102,13 @@ class Hotel {
         return roomsByCategory.get(category);
     }
 
-    public boolean makeReservation(String category, String guestName) {
+    public boolean makeReservation(String category, String guestName, String telephoneNumber) {
         List<Room> rooms = roomsByCategory.get(category);
         for (Room room : rooms) {
             if (!room.isBooked()) {
                 room.setBooked(true);
                 room.setGuestName(guestName);
+                room.setTelephoneNumber(telephoneNumber);
                 return true;
             }
         }
@@ -132,6 +133,7 @@ class Room {
     private int number;
     private boolean booked;
     private String guestName;
+    private String telephoneNumber; // Added telephone number
 
     public Room(String category, int number) {
         this.category = category;
@@ -161,6 +163,14 @@ class Room {
     public void setGuestName(String guestName) {
         this.guestName = guestName;
     }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
 }
 
 class MakeReservationFrame extends JFrame {
@@ -182,9 +192,16 @@ class MakeReservationFrame extends JFrame {
         }
         mainPanel.add(categoryComboBox, BorderLayout.NORTH);
 
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 5, 5)); // Adjusted spacing
+        JLabel nameLabel = new JLabel("Enter Name:");
         JTextField nameTextField = new JTextField(20);
-        mainPanel.add(new JLabel("Enter Name:"), BorderLayout.WEST);
-        mainPanel.add(nameTextField, BorderLayout.CENTER);
+        JLabel telephoneLabel = new JLabel("Enter Telephone Number:");
+        JTextField telephoneTextField = new JTextField(20);
+        inputPanel.add(nameLabel);
+        inputPanel.add(nameTextField);
+        inputPanel.add(telephoneLabel);
+        inputPanel.add(telephoneTextField);
+        mainPanel.add(inputPanel, BorderLayout.CENTER);
 
         JButton reserveButton = new JButton("Reserve");
         reserveButton.addActionListener(new ActionListener() {
@@ -192,15 +209,16 @@ class MakeReservationFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String selectedCategory = (String) categoryComboBox.getSelectedItem();
                 String guestName = nameTextField.getText();
-                if (!guestName.isEmpty()) {
-                    boolean reservationStatus = hotel.makeReservation(selectedCategory, guestName);
+                String telephoneNumber = telephoneTextField.getText();
+                if (!guestName.isEmpty() && !telephoneNumber.isEmpty()) {
+                    boolean reservationStatus = hotel.makeReservation(selectedCategory, guestName, telephoneNumber);
                     if (reservationStatus) {
                         JOptionPane.showMessageDialog(null, "Reservation successful!");
                     } else {
                         JOptionPane.showMessageDialog(null, "Reservation failed. No available rooms.");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please enter guest name.");
+                    JOptionPane.showMessageDialog(null, "Please enter guest name and telephone number.");
                 }
             }
         });
@@ -267,7 +285,7 @@ class ViewBookingDetailsFrame extends JFrame {
         StringBuilder sb = new StringBuilder();
         for (Room room : hotel.getAllRooms()) {
             if (room.isBooked()) {
-                sb.append("Room ").append(room.getNumber()).append(" - ").append(room.getGuestName()).append("\n");
+                sb.append("Room ").append(room.getNumber()).append(" - ").append(room.getGuestName()).append(" - ").append(room.getTelephoneNumber()).append("\n");
             }
         }
         detailsTextArea.setText(sb.toString());
