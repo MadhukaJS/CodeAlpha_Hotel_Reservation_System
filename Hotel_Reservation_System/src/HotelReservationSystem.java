@@ -163,10 +163,58 @@ class Room {
     }
 }
 
+class MakeReservationFrame extends JFrame {
+    private Hotel hotel;
+
+    public MakeReservationFrame(Hotel hotel) {
+        this.hotel = hotel;
+        setTitle("Make Reservation");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JComboBox<String> categoryComboBox = new JComboBox<>();
+        for (String category : hotel.getRoomCategories()) {
+            categoryComboBox.addItem(category);
+        }
+        mainPanel.add(categoryComboBox, BorderLayout.NORTH);
+
+        JTextField nameTextField = new JTextField(20);
+        mainPanel.add(new JLabel("Enter Name:"), BorderLayout.WEST);
+        mainPanel.add(nameTextField, BorderLayout.CENTER);
+
+        JButton reserveButton = new JButton("Reserve");
+        reserveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedCategory = (String) categoryComboBox.getSelectedItem();
+                String guestName = nameTextField.getText();
+                if (!guestName.isEmpty()) {
+                    boolean reservationStatus = hotel.makeReservation(selectedCategory, guestName);
+                    if (reservationStatus) {
+                        JOptionPane.showMessageDialog(null, "Reservation successful!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Reservation failed. No available rooms.");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please enter guest name.");
+                }
+            }
+        });
+        mainPanel.add(reserveButton, BorderLayout.SOUTH);
+
+        add(mainPanel);
+        setVisible(true);
+    }
+}
+
 class SearchRoomsFrame extends JFrame {
     public SearchRoomsFrame(Hotel hotel) {
         setTitle("Search for Available Rooms");
-        setSize(600, 400);
+        setSize(400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -204,55 +252,10 @@ class SearchRoomsFrame extends JFrame {
     }
 }
 
-class MakeReservationFrame extends JFrame {
-    public MakeReservationFrame(Hotel hotel) {
-        setTitle("Make Reservation");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        JComboBox<String> categoryComboBox = new JComboBox<>();
-        for (String category : hotel.getRoomCategories()) {
-            categoryComboBox.addItem(category);
-        }
-        mainPanel.add(categoryComboBox, BorderLayout.NORTH);
-
-        JTextField nameTextField = new JTextField(20);
-        mainPanel.add(new JLabel("Enter Guest Name:"), BorderLayout.WEST);
-        mainPanel.add(nameTextField, BorderLayout.CENTER);
-
-        JButton reserveButton = new JButton("Reserve");
-        reserveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedCategory = (String) categoryComboBox.getSelectedItem();
-                String guestName = nameTextField.getText();
-                if (!guestName.isEmpty()) {
-                    boolean reservationStatus = hotel.makeReservation(selectedCategory, guestName);
-                    if (reservationStatus) {
-                        JOptionPane.showMessageDialog(null, "Reservation successful!");
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Reservation failed. No available rooms.");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter guest name.");
-                }
-            }
-        });
-        mainPanel.add(reserveButton, BorderLayout.SOUTH);
-
-        add(mainPanel);
-        setVisible(true);
-    }
-}
-
 class ViewBookingDetailsFrame extends JFrame {
     public ViewBookingDetailsFrame(Hotel hotel) {
         setTitle("View Booking Details");
-        setSize(600, 400);
+        setSize(400, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
